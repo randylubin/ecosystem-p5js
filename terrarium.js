@@ -60,7 +60,7 @@ function setup(){
 }
 
 function draw(){
-	background(100);
+	background(50);
 	ecosystem.run();
 }
 

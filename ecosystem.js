@@ -46,10 +46,10 @@ function Ecosystem(){
 	this.killOrganism = function(foodRank, i, cal, locale){
 		if (foodRank > 0){
 			this.decompose(locale, cal);
-			console.log('dead!')
+			//console.log('dead!')
 
 		}
-		console.log('killing2', ecosystem.organisms[i])
+		//console.log('killing2', ecosystem.organisms[i])
 
 		if (this.organisms.length === 1){
 			this.organisms = [];
