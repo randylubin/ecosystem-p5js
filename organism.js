@@ -24,7 +24,7 @@ function Organism(stats) {
 				var mainColor = color(random(0,50),random(150,255),random(0,50));				
 				break;
 			case 1:
-				var mainColor = color(random(0,50),random(0,50),random(150,255));
+				var mainColor = color(random(240,255),random(240,255),random(0,50));
 				break;
 			case 2:
 				var mainColor = color(random(150,255),random(0,50),random(0,50));
@@ -32,7 +32,7 @@ function Organism(stats) {
 		}
 
 		this.c1 = mainColor
-		this.c2 = color(mainColor.rgba[0], mainColor.rgba[1], mainColor.rgba[2], 10);
+		this.c2 = color(mainColor.rgba[0], mainColor.rgba[1], mainColor.rgba[2], 20);
 	},
 
 	this.run = function(organisms){
@@ -61,7 +61,7 @@ function Organism(stats) {
 		this.hunted = false;
 		for (var i = 0; i < organisms.length; i++){
 			this.other = organisms[i];
-			if ((this.foodRank == this.other.foodRank - 1) && (this.loc.dist(this.other.loc.get()) < this.visionR)){
+			if ((this.foodRank == this.other.foodRank - 1) && (this.loc.dist(this.other.loc.get()) < (this.visionR + this.other.radius))){
 				this.acc = this.steer(this.other.loc.get());
 				this.acc.mult(-1);
 				this.hunted = true;
@@ -80,23 +80,26 @@ function Organism(stats) {
 		for (var i = 0; i < organisms.length; i++){
 			this.other = organisms[i];
 			//if it is edible and in range
-			if ((this.foodRank == this.other.foodRank + 1) && (place.dist(this.other.loc.get()) < this.visionR)){
+			if ((this.foodRank == this.other.foodRank + 1) && (place.dist(this.other.loc.get()) < (this.visionR + this.other.radius))){
 				// if is underneath, eat it
 				if(place.dist(this.other.loc.get()) <= this.radius){
 					ecosystem.killOrganism(this.foodRank - 1, i, this.other.calories*.25, this.other.loc.get());
 					this.calories += this.other.calories*.75;
 					this.hunting = false;
-					this.nearest = null;
+					this.nearestDist = null;
 					this.nearestPV = null;
 					//console.log('nomnomnom')
 					break;
 				// otherwise evaluate for hunt
 				} else {
+					//console.log('targeting')
 					this.tempDist = place.dist(this.other.loc.get());
-					if (!this.nearest) this.nearest = this.tempDist
+					if (!this.nearestDist){
+						this.nearestDist = this.tempDist;
+					}
 					//if closest
-					if (this.tempDist < this.nearest){
-						this.nearest = this.tempDist;
+					if (this.tempDist <= this.nearestDist){
+						this.nearestDist = this.tempDist;
 						this.nearestPV = this.other.loc.get();
 						this.hunting=true;
 						//console.log('hunting')
@@ -180,6 +183,6 @@ function Organism(stats) {
 	this.move = function(newLoc){
 		this.loc = newLoc.get();
 	}
-	console.log('new org of troph', this.foodRank)
+	//console.log('new org of troph', this.foodRank)
 	this.colorize(this.foodRank)
 }
