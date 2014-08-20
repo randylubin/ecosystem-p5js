@@ -3,6 +3,8 @@ ecosystem-p5js
 
 This is a port of https://github.com/randylubin/Ecosystem (originally built for Processing) to p5.js
 
+Demo: http://randylubin.github.io/ecosystem-p5js/
+
 ###About
 
 This is a simple ecosystem simulator built in Processing. There are three levels of the food chain:
